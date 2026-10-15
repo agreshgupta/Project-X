@@ -1,0 +1,50 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
+const links = [
+  { label: 'Instagram', href: site.links.instagram },
+  { label: 'LinkedIn', href: site.links.linkedin },
+  { label: 'Canva portfolio', href: site.links.canva },
+  { label: 'Download CV (PDF)', href: site.links.cv },
+];
+---
+<Base title="Contact | Sanskriti Basnet, Stylist & Visual Merchandiser" description="Get in touch for campaign, catalogue, VM and freelance styling work.">
+  <section class="on-cream">
+    <div class="mx-auto grid max-w-7xl gap-14 px-5 py-20 md:grid-cols-2">
+      <div>
+        <h1 class="display text-5xl md:text-7xl">Let’s talk</h1>
+        <p class="mt-6 text-lg">Best way to reach me is email.</p>
+        <a href={`mailto:${site.email}`} class="mt-3 block break-all text-xl font-bold text-crimson underline decoration-2 underline-offset-4 md:text-2xl">{site.email}</a>
+        {site.showPhone && <p class="mt-4 font-medium">Phone: <a href={`tel:+91${site.phone}`} class="underline">{site.phone}</a></p>}
+        <p class="mt-4 font-medium">{site.location}</p>
+        <ul class="mt-10 space-y-3">
+          {links.map((l) => (
+            <li><a href={l.href} target="_blank" rel="noopener" class="inline-flex items-center gap-3 text-lg font-semibold underline decoration-2 underline-offset-4 hover:text-crimson"><span class="dots sm hairline"><i></i><i></i><i></i></span>{l.label}</a></li>
+          ))}
+        </ul>
+      </div>
+
+      <form id="enquiry" class="border-2 border-ink p-6 md:p-8" aria-labelledby="form-h">
+        <h2 id="form-h" class="font-display text-xl font-extrabold uppercase">Quick enquiry</h2>
+        <p class="mt-1 text-sm">Opens your email app with the message ready to send.</p>
+        <label class="mt-6 block text-sm font-semibold" for="f-name">Your name</label>
+        <input id="f-name" name="name" required autocomplete="name" class="mt-1 w-full border-2 border-ink bg-cream px-3 py-2.5" />
+        <label class="mt-4 block text-sm font-semibold" for="f-org">Brand or company</label>
+        <input id="f-org" name="org" autocomplete="organization" class="mt-1 w-full border-2 border-ink bg-cream px-3 py-2.5" />
+        <label class="mt-4 block text-sm font-semibold" for="f-msg">What are you working on?</label>
+        <textarea id="f-msg" name="msg" rows="5" required class="mt-1 w-full border-2 border-ink bg-cream px-3 py-2.5"></textarea>
+        <button type="submit" class="btn btn-crimson mt-6">Open email</button>
+      </form>
+    </div>
+  </section>
+</Base>
+
+<script define:vars={{ email: site.email }}>
+  document.getElementById('enquiry')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const f = new FormData(e.target);
+    const subject = `Enquiry from ${f.get('name')}${f.get('org') ? ' (' + f.get('org') + ')' : ''}`;
+    const body = `${f.get('msg')}\n\n${f.get('name')}`;
+    location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  });
+</script>

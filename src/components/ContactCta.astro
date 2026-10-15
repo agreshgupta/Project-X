@@ -1,0 +1,13 @@
+---
+import { site } from '../data/site';
+---
+<section id="contact" class="on-stage py-24 scroll-mt-14">
+  <div class="mx-auto max-w-7xl px-5">
+    <h2 class="display max-w-4xl text-5xl md:text-8xl">Got a season to launch?</h2>
+    <p class="mt-6 max-w-lg text-lg text-cream/85">Campaigns, catalogues, store launches. Tell me what you’re making.</p>
+    <div class="mt-10 flex flex-wrap gap-3">
+      <a class="btn btn-crimson" href={`mailto:${site.email}?subject=${encodeURIComponent('Hello from your portfolio')}`}>Email me</a>
+      <a class="btn btn-line" href="/contact">All contact details</a>
+    </div>
+  </div>
+</section>

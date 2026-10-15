@@ -1,0 +1,33 @@
+---
+import { site, stats } from '../data/site';
+---
+{site.showImpactNumbers && (
+  <section id="impact" class="on-crimson py-20" aria-labelledby="impact-h">
+    <div class="mx-auto max-w-7xl px-5">
+      <h2 id="impact-h" class="display text-4xl md:text-6xl">Styled to perform</h2>
+      <dl class="mt-12 grid gap-10 md:grid-cols-3">
+        {stats.headline.map((s) => (
+          <div>
+            <dd class="stat-num text-6xl md:text-7xl">{s.value}</dd>
+            <dt class="mt-2 max-w-[16rem] text-base font-medium">{s.label}</dt>
+          </div>
+        ))}
+      </dl>
+      <div class="mt-16 grid gap-12 border-t-2 border-cream/40 pt-10 md:grid-cols-2">
+        {stats.byBrand.map((b) => (
+          <div>
+            <h3 class="font-display text-xl font-extrabold uppercase">{b.brand}</h3>
+            <dl class="mt-6 grid grid-cols-2 gap-x-6 gap-y-7">
+              {b.items.map((i) => (
+                <div>
+                  <dd class="stat-num text-3xl md:text-4xl">{i.value}</dd>
+                  <dt class="mt-1 text-sm">{i.label}</dt>
+                </div>
+              ))}
+            </dl>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+)}

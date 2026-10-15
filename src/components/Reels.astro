@@ -1,0 +1,54 @@
+---
+/**
+ * Reels in phone frames. Only videos that have a `src` in videos.ts are shown.
+ * Videos play muted when scrolled into view (not at all if the visitor prefers reduced motion).
+ * Tap or click toggles sound-free play/pause.
+ */
+import type { RVideo } from '../lib/content';
+interface Props { videos: RVideo[]; }
+const { videos } = Astro.props;
+---
+{videos.length > 0 && (
+  <section id="reels" class="on-stage py-20 scroll-mt-14">
+    <div class="mx-auto max-w-7xl px-5">
+      <h2 class="display text-4xl md:text-6xl">Reels</h2>
+    </div>
+    <ul class="strip mt-8" style="scroll-snap-type:x proximity">
+      {videos.map((v) => (
+        <li class="frame" style={`width:${v.orientation === 'landscape' ? 'min(86vw,520px)' : 'min(62vw,250px)'}`}>
+          <button class="reel phone block w-full text-left" data-play aria-label={`Play or pause: ${v.title}`}
+                  style={`aspect-ratio:${v.orientation === 'landscape' ? '16/9' : '9/16'}`}>
+            <video muted loop playsinline preload="none" poster={v.poster.src} data-src={v.src}
+                   width={v.poster.width} height={v.poster.height}></video>
+          </button>
+          <p class="pt-3 text-sm font-semibold">{v.title}</p>
+          <p class="text-xs text-cream/70">{v.brand}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+)}
+<script>
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const cursor = document.getElementById('cursor-play');
+  const vids = document.querySelectorAll<HTMLVideoElement>('.reel video');
+  const load = (v: HTMLVideoElement) => { if (!v.src && v.dataset.src) { v.src = v.dataset.src; } };
+  if (vids.length) {
+    // Autoplay in view (muted), pause when out of view
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((en) => {
+        const v = en.target as HTMLVideoElement;
+        if (en.isIntersecting && en.intersectionRatio > 0.6) { load(v); if (!reduce) v.play().catch(() => {}); }
+        else v.pause();
+      });
+    }, { threshold: [0, 0.6] });
+    vids.forEach((v) => io.observe(v));
+    document.querySelectorAll<HTMLButtonElement>('[data-play]').forEach((b) => {
+      const v = b.querySelector('video') as HTMLVideoElement;
+      b.addEventListener('click', () => { load(v); v.paused ? v.play().catch(() => {}) : v.pause(); });
+      b.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') cursor?.classList.add('on'); });
+      b.addEventListener('pointerleave', () => cursor?.classList.remove('on'));
+    });
+    window.addEventListener('pointermove', (e) => { if (cursor) cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`; });
+  }
+</script>

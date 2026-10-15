@@ -1,0 +1,23 @@
+---
+interface Props { vm: { heading: string; note: string; frames: { src: string; alt: string; width: number; height: number; caption: string }[] } }
+const { vm } = Astro.props;
+---
+<section id="vm" class="on-stage py-20 scroll-mt-14">
+  <div class="mx-auto max-w-7xl px-5">
+    <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+      <h2 class="display max-w-3xl text-4xl md:text-6xl">{vm.heading}</h2>
+      <p class="max-w-xs text-cream/80">{vm.note}</p>
+    </div>
+    <ul class="mt-10 grid gap-4 md:grid-cols-3">
+      {vm.frames.map((f) => (
+        <li>
+          <div class="overflow-hidden" style="aspect-ratio:4/5">
+            <img src={f.src} alt={f.alt} width={f.width} height={f.height} loading="lazy" decoding="async"
+                 class="h-full w-full object-cover" style="object-position:center 25%" />
+          </div>
+          <p class="pt-2 text-sm text-cream/70">{f.caption}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>

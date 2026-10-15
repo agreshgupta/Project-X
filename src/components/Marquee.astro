@@ -1,0 +1,15 @@
+---
+import { site } from '../data/site';
+// Brand names, text only. The row is duplicated so the loop looks seamless.
+const row = [...site.brands, ...site.brands, ...site.brands];
+---
+<div class="marquee on-cream border-y-2 border-ink py-4" aria-label={`Brands I style for: ${site.brands.join(', ')}`}>
+  <div class="marquee-track" aria-hidden="true">
+    {[0, 1].map(() => row.map((b) => (
+      <>
+        <span class="font-display text-2xl font-extrabold uppercase md:text-4xl">{b}</span>
+        <span class="dots hairline"><i></i><i></i><i></i></span>
+      </>
+    )))}
+  </div>
+</div>

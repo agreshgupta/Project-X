@@ -1,0 +1,17 @@
+---
+import { site } from '../data/site';
+---
+<footer class="on-stage border-t border-cream/10">
+  <div class="mx-auto flex max-w-7xl flex-col gap-6 px-5 py-10 text-sm text-cream/70 md:flex-row md:items-center md:justify-between">
+    <div class="flex items-center gap-3">
+      <span class="dots sm"><i></i><i></i><i></i></span>
+      <span>{site.name}, {site.title}. {site.location}.</span>
+    </div>
+    <div class="flex flex-wrap gap-x-6 gap-y-2">
+      <a class="hover:text-lime" href={`mailto:${site.email}`}>Email</a>
+      <a class="hover:text-lime" href={site.links.instagram} rel="noopener" target="_blank">Instagram</a>
+      <a class="hover:text-lime" href={site.links.linkedin} rel="noopener" target="_blank">LinkedIn</a>
+      <a class="hover:text-lime" href={site.links.canva} rel="noopener" target="_blank">Canva portfolio</a>
+    </div>
+  </div>
+</footer>

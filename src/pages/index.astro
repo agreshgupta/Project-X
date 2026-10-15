@@ -1,0 +1,53 @@
+---
+import Base from '../layouts/Base.astro';
+import Marquee from '../components/Marquee.astro';
+import WorkStrip from '../components/WorkStrip.astro';
+import Reels from '../components/Reels.astro';
+import Stats from '../components/Stats.astro';
+import VmStrip from '../components/VmStrip.astro';
+import About from '../components/About.astro';
+import ContactCta from '../components/ContactCta.astro';
+import { site } from '../data/site';
+import { getProjects, getVideos, getVm, categoriesIn } from '../lib/content';
+import { getImg } from '../lib/media';
+
+const projects = await getProjects();
+const videos = await getVideos();
+const vm = await getVm();
+const hero = await getImg('fm-silhouette', 'Silhouetted model in boots striding against a saturated red backdrop');
+---
+<Base intro>
+  <!-- HERO -->
+  <section class="on-stage relative overflow-hidden">
+    <div class="mx-auto grid min-h-[calc(100svh-58px)] max-w-7xl md:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)]">
+      <div class="relative z-10 flex flex-col justify-end px-5 pb-10 pt-24 md:justify-center md:py-16">
+        <p class="mb-6"><span class="grid-label text-sm md:text-base">{site.title}</span></p>
+        <h1 class="display hero-name text-[clamp(2.1rem,10.4vw,3.4rem)] md:text-[clamp(2.6rem,6.6vw,6.4rem)]">
+          <span>{site.firstName}</span><span class="text-crimson">{site.lastName}</span>
+        </h1>
+        <p class="mt-5 max-w-md text-lg text-cream/90 md:text-xl">{site.tagline}</p>
+        <p class="mt-3 text-sm text-cream/75">{site.brands.join('  /  ')}</p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="#work" class="btn btn-crimson">View work</a>
+          <a href={`mailto:${site.email}`} class="btn btn-line">Get in touch</a>
+        </div>
+      </div>
+      <div class="absolute inset-x-0 top-0 h-[62%] md:static md:h-auto">
+        <div class="hero-img relative h-full">
+          <img src={hero.src} alt={hero.alt} width={hero.width} height={hero.height} fetchpriority="high" decoding="async"
+               class="h-full w-full object-cover" style="object-position:center 42%" />
+          <div class="absolute inset-0 bg-gradient-to-t from-stage via-stage/20 to-transparent md:hidden"></div>
+          <span class="sticker absolute right-4 top-5 md:left-5 md:right-auto md:top-8"><b>Styling advisory</b>Explicit confidence</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Marquee />
+  <WorkStrip projects={projects} categories={categoriesIn(projects)} />
+  <Reels videos={videos} />
+  <Stats />
+  <VmStrip vm={vm} />
+  <About />
+  <ContactCta />
+</Base>

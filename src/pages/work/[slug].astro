@@ -1,0 +1,85 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getProjects, getVideos, titleOf } from '../../lib/content';
+
+export async function getStaticPaths() {
+  const projects = await getProjects();
+  const videos = await getVideos();
+  return projects.map((p, i) => ({
+    params: { slug: p.slug },
+    props: { p, next: projects[(i + 1) % projects.length], videos: videos.filter((v) => p.videos?.includes(v.id)) },
+  }));
+}
+const { p, next, videos } = Astro.props;
+const hasBoards = p.moodboards.length > 0;
+---
+<Base title={`${titleOf(p)} | Sanskriti Basnet`} description={`${p.summary} ${p.role}`} image={p.cover.src}>
+  <article class="on-stage">
+    <div class="mx-auto max-w-7xl px-5 py-14">
+      <a href="/#work" class="text-sm text-cream/75 hover:text-lime">Back to work</a>
+      <p class="mt-8 font-semibold text-lime">{p.brand}{p.season ? `, ${p.season}` : ''}</p>
+      <h1 class="display mt-2 text-5xl md:text-8xl">{p.title}</h1>
+      <p class="mt-6 max-w-xl text-lg text-cream/90">{p.summary}</p>
+      <dl class="mt-8 grid max-w-3xl gap-6 border-t border-cream/25 pt-6 md:grid-cols-[auto_1fr]">
+        <div><dt class="text-sm text-cream/70">Category</dt><dd class="font-semibold">{p.category}</dd></div>
+        <div><dt class="text-sm text-cream/70">My role</dt><dd class="max-w-xl">{p.role}</dd></div>
+        {p.credits && <div class="md:col-span-2"><dt class="text-sm text-cream/70">Credits</dt><dd>{p.credits}</dd></div>}
+      </dl>
+
+      {hasBoards && (
+        <div class="mt-12 flex flex-wrap items-center gap-2" role="group" aria-label="Switch between shoot and moodboard">
+          <button class="chip" aria-pressed="true" data-show="shoot">Shoot</button>
+          <button class="chip" aria-pressed="false" data-show="board">Moodboard</button>
+        </div>
+      )}
+
+      <div class={hasBoards ? 'mt-6' : 'mt-12'}>
+        <div class="swap-panel masonry" id="panel-shoot">
+          {p.images.map((im, i) => (
+            <figure><img src={im.src} alt={im.alt} width={im.width} height={im.height} loading={i < 2 ? 'eager' : 'lazy'} decoding="async" /></figure>
+          ))}
+        </div>
+        {hasBoards && (
+          <div class="swap-panel masonry" id="panel-board" hidden style="columns:1">
+            {p.moodboards.map((im) => (
+              <figure><img src={im.src} alt={im.alt} width={im.width} height={im.height} loading="lazy" decoding="async" /></figure>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {videos.length > 0 && (
+        <div class="mt-14 grid gap-6 md:grid-cols-3">
+          {videos.map((v) => (
+            <figure>
+              <video controls playsinline preload="none" poster={v.poster.src} src={v.src} class="w-full"></video>
+              <figcaption class="pt-2 text-sm text-cream/75">{v.title}</figcaption>
+            </figure>
+          ))}
+        </div>
+      )}
+    </div>
+
+    <a href={`/work/${next.slug}`} class="on-crimson block px-5 py-12">
+      <span class="mx-auto block max-w-7xl">
+        <span class="text-sm font-medium">Next project</span>
+        <span class="display mt-2 block text-4xl md:text-6xl">{next.title} {next.season}</span>
+        <span class="mt-1 block font-medium">{next.brand}</span>
+      </span>
+    </a>
+  </article>
+</Base>
+
+<script>
+  const btns = document.querySelectorAll<HTMLButtonElement>('[data-show]');
+  const shoot = document.getElementById('panel-shoot');
+  const board = document.getElementById('panel-board');
+  btns.forEach((b) =>
+    b.addEventListener('click', () => {
+      btns.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+      const showBoard = b.dataset.show === 'board';
+      if (shoot) shoot.hidden = showBoard;
+      if (board) board.hidden = !showBoard;
+    }),
+  );
+</script>

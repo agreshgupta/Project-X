@@ -1,0 +1,59 @@
+---
+import { site, education, languages, skills, experience } from '../data/site';
+import { getImg } from '../lib/media';
+const portrait = site.portrait ? await getImg(site.portrait, `Portrait of ${site.name}`) : null;
+const tagStyles = ['bg-crimson text-cream', 'bg-lime text-ink', 'bg-ink text-cream', 'border-2 border-ink text-ink'];
+---
+<div class="on-cream">
+  <section id="about" class="mx-auto max-w-7xl scroll-mt-14 px-5 py-20">
+    <div class="grid gap-12 md:grid-cols-[1.3fr_1fr] md:items-start">
+      <div>
+        <h2 class="display text-4xl md:text-6xl">{site.aboutHeadline}</h2>
+        <p class="mt-8 max-w-xl text-lg leading-relaxed">{site.aboutText}</p>
+        <p class="mt-6 flex flex-wrap items-center gap-3">
+          <span class="grid-label">{site.title}</span>
+          <span class="text-sm font-medium">{site.location}</span>
+        </p>
+      </div>
+      <div class="flex flex-col gap-6">
+        {portrait ? (
+          <img src={portrait.src} alt={portrait.alt} width={portrait.width} height={portrait.height} loading="lazy" class="w-full" />
+        ) : null}
+        <div class="border-2 border-ink p-6">
+          <h3 class="font-display text-lg font-extrabold uppercase">Education</h3>
+          <ul class="mt-4 space-y-4">
+            {education.map((e) => (
+              <li><p class="font-semibold">{e.degree}</p><p class="text-sm">{e.school}</p></li>
+            ))}
+          </ul>
+          <p class="mt-6 text-sm"><span class="font-semibold">Languages:</span> {languages.join(', ')}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience" class="mx-auto max-w-7xl scroll-mt-14 border-t-2 border-ink px-5 py-20">
+    <h2 class="display text-4xl md:text-6xl">Experience</h2>
+    <ol class="timeline mt-12 ml-2 space-y-14">
+      {experience.map((e) => (
+        <li>
+          <p class="text-sm font-semibold text-crimson">{e.period}</p>
+          <h3 class="mt-1 font-display text-xl font-extrabold uppercase md:text-2xl">{e.role}</h3>
+          <p class="mt-1 text-sm font-medium">{e.company} · {e.brands}</p>
+          <ul class="mt-4 max-w-2xl list-disc space-y-1.5 pl-5">
+            {e.points.map((p) => <li>{p}</li>)}
+          </ul>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section id="skills" class="mx-auto max-w-7xl scroll-mt-14 border-t-2 border-ink px-5 py-20">
+    <h2 class="display text-4xl md:text-6xl">What I do</h2>
+    <ul class="mt-10 flex flex-wrap gap-3">
+      {skills.map((s, i) => (
+        <li class={`rounded-full px-5 py-2.5 text-base font-semibold ${tagStyles[i % tagStyles.length]}`} style={`transform:rotate(${[-1.5, 1, -0.5, 1.5][i % 4]}deg)`}>{s}</li>
+      ))}
+    </ul>
+  </section>
+</div>
