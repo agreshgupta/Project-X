@@ -31,9 +31,9 @@ export const site = {
 
   // ---------- LINKS (DUMMY – replace with real ones) ----------
   links: {
-    instagram: 'https://www.instagram.com/your_handle', // [ADD: your Instagram]
-    linkedin: 'https://www.linkedin.com/in/your-handle', // [ADD: your LinkedIn]
-    canva: 'https://www.canva.com/design/your-portfolio-link', // [ADD: your Canva portfolio link]
+    instagram: 'https://www.instagram.com/the.pixiee', // [ADD: your Instagram]
+    linkedin: 'https://www.linkedin.com/in/sanskriti-basnet-86bab8200/', // [ADD: your LinkedIn]
+    canva: 'https://canva.link/10684wooocm0gbb', // [ADD: your Canva portfolio link]
     cv: '/sanskriti-basnet-cv.pdf', // [ADD: drop your CV PDF into /public with this name]
   },
 
