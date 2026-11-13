@@ -16,8 +16,8 @@ export const vm = {
   heading: 'From shoot set to shop floor.',
   note: 'Pan-India VM execution across 100+ U.S. Polo Assn. stores.',
   frames: [
-    { ...img('fm-kstreet-3', 'Model in a graphic raglan tee leaning on shelves of snacks'), caption: 'Set and shelf styling, K-Street' },
-    { ...img('fm-kstreet-b-1', 'Model seated in a shopping trolley in a snack-aisle set'), caption: 'Set and shelf styling, K-Street' },
-    { ...img('fm-kstreet-2', 'Group of models in graphic tees among supermarket shelves'), caption: 'Set and shelf styling, K-Street' },
+    { ...img('left_vm', 'Wall display, layered autumn tones'), caption: 'Wall display, layered autumn tones' },
+    { ...img('center_vm', 'Mannequin and table display, shop floor'), caption: 'Mannequin and table display, shop floor' },
+    { ...img('right_vm', 'Wall display, prints and stripes'), caption: 'Wall display, prints and stripes' },
   ],
 };
